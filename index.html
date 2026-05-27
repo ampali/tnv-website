@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="TheNextventure — boutique AI engineering. We help businesses move past the hype and build AI systems that create real-world impact.">
+  <title>TheNextventure — Boutique AI Engineering</title>
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="canonical" href="https://thenextventure.in">
+
+  <meta property="og:title" content="TheNextventure — AI without the theatre.">
+  <meta property="og:description"
+    content="Boutique AI engineering. We help businesses move past the hype and build systems that create real-world impact.">
+  <meta property="og:image" content="og-image.png">
+  <meta property="og:url" content="https://thenextventure.in">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;1,400&family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Geist+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fafaf9;
+      --bg-elevated: #ffffff;
+      --ink: #1c1917;
+      --ink-dim: #57534e;
+      --ink-faint: #78716c;
+      --ink-ghost: #d6d3d1;
+      --line: rgba(28, 25, 23, 0.08);
+      --line-strong: rgba(28, 25, 23, 0.18);
+      --warm: #44403c;
+      --serif: 'Instrument Serif', Georgia, serif;
+      --text: 'Newsreader', Georgia, serif;
+      --mono: 'Geist Mono', ui-monospace, 'JetBrains Mono', monospace;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--text);
+      font-optical-sizing: auto;
+      font-weight: 400;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0.018;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/></svg>");
+      mix-blend-mode: multiply;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      padding: 24px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: backdrop-filter 0.4s var(--ease-out), background 0.4s var(--ease-out), border-color 0.4s var(--ease-out);
+      border-bottom: 1px solid transparent;
+    }
+
+    nav.scrolled {
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      background: rgba(250, 250, 249, 0.72);
+      border-bottom-color: var(--line);
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      transition: opacity 0.3s var(--ease-out);
+    }
+
+    .logo:hover {
+      opacity: 0.7;
+    }
+
+    .logo img {
+      height: 48px;
+      width: auto;
+      display: block;
+    }
+
+    .nav-cta {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      text-decoration: none;
+      transition: color 0.3s var(--ease-out);
+    }
+
+    .nav-cta:hover {
+      color: var(--ink);
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 120px 48px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -10%;
+      left: -10%;
+      width: 70%;
+      height: 80%;
+      background: radial-gradient(circle, rgba(120, 113, 108, 0.06) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-meta {
+      font-family: var(--mono);
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      margin-bottom: 48px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      opacity: 0;
+      animation: fadeUp 1s var(--ease-out) 0.3s forwards;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-meta::before {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: var(--ink-faint);
+    }
+
+    h1.hero-title {
+      font-family: var(--serif);
+      font-size: clamp(48px, 8vw, 120px);
+      font-weight: 400;
+      line-height: 0.96;
+      letter-spacing: -0.035em;
+      margin-bottom: 48px;
+      max-width: 1100px;
+      position: relative;
+      z-index: 1;
+    }
+
+    h1.hero-title .line {
+      display: block;
+      overflow: hidden;
+    }
+
+    h1.hero-title .line span {
+      display: inline-block;
+      transform: translateY(110%);
+      animation: lineUp 1.2s var(--ease-out) forwards;
+    }
+
+    h1.hero-title .line:nth-child(1) span {
+      animation-delay: 0.5s;
+    }
+
+    h1.hero-title .line:nth-child(2) span {
+      animation-delay: 0.7s;
+    }
+
+    h1.hero-title .line:nth-child(3) span {
+      animation-delay: 0.9s;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--warm);
+    }
+
+    @keyframes lineUp {
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-sub {
+      font-size: clamp(16px, 1.4vw, 20px);
+      color: var(--ink-dim);
+      max-width: 560px;
+      line-height: 1.6;
+      opacity: 0;
+      animation: fadeUp 1s var(--ease-out) 1.3s forwards;
+      position: relative;
+      z-index: 1;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 48px;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      opacity: 0;
+      animation: fadeUp 1s var(--ease-out) 1.8s forwards;
+      transition: color 0.3s var(--ease-out);
+    }
+
+    .scroll-indicator:hover {
+      color: var(--ink);
+    }
+
+    .scroll-indicator .arrow {
+      width: 1px;
+      height: 32px;
+      background: var(--ink-ghost);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-indicator .arrow::after {
+      content: '';
+      position: absolute;
+      top: -100%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--ink);
+      animation: scrollDown 2.4s var(--ease-in-out) infinite;
+    }
+
+    @keyframes scrollDown {
+      0% {
+        top: -100%;
+      }
+
+      100% {
+        top: 100%;
+      }
+    }
+
+    section {
+      padding: 160px 48px;
+      position: relative;
+    }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      margin-bottom: 64px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .section-label::before {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: var(--ink-faint);
+    }
+
+    .manifesto {
+      border-top: 1px solid var(--line);
+    }
+
+    .manifesto-text {
+      font-family: var(--serif);
+      font-size: clamp(28px, 4vw, 56px);
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      max-width: 1200px;
+    }
+
+    .manifesto-text em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--warm);
+    }
+
+    .manifesto-text .muted {
+      color: var(--ink-faint);
+    }
+
+    .reveal-word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+    }
+
+    .reveal-word.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .approach {
+      border-top: 1px solid var(--line);
+    }
+
+    .approach-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .approach-heading {
+      font-family: var(--serif);
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      position: sticky;
+      top: 120px;
+    }
+
+    .approach-heading em {
+      font-style: italic;
+      color: var(--warm);
+    }
+
+    .pillars {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pillar {
+      padding: 40px 0;
+      border-top: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 60px 1fr;
+      gap: 32px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1s var(--ease-out), transform 1s var(--ease-out);
+    }
+
+    .pillar:last-child {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .pillar.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .pillar-num {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      color: var(--ink-faint);
+      padding-top: 8px;
+    }
+
+    .pillar-title {
+      font-family: var(--serif);
+      font-size: 28px;
+      font-weight: 400;
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+
+    .pillar-desc {
+      color: var(--ink-dim);
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 1.6;
+    }
+
+    .stance {
+      border-top: 1px solid var(--line);
+    }
+
+    .stance-quote {
+      font-family: var(--serif);
+      font-size: clamp(32px, 4.5vw, 64px);
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      max-width: 1100px;
+    }
+
+    .stance-quote em {
+      font-style: italic;
+      color: var(--warm);
+    }
+
+    .stance-sub {
+      margin-top: 48px;
+      color: var(--ink-dim);
+      font-size: 20px;
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    .contact {
+      border-top: 1px solid var(--line);
+      padding: 200px 48px 120px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 100%, rgba(120, 113, 108, 0.07) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .contact-label {
+      font-family: var(--mono);
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      margin-bottom: 48px;
+      position: relative;
+    }
+
+    .contact h2 {
+      font-family: var(--serif);
+      font-size: clamp(40px, 6vw, 88px);
+      font-weight: 400;
+      line-height: 1.03;
+      letter-spacing: -0.035em;
+      margin-bottom: 64px;
+      position: relative;
+    }
+
+    .contact h2 em {
+      font-style: italic;
+      color: var(--warm);
+    }
+
+    .email-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      padding: 24px 40px;
+      border: 1px solid var(--line-strong);
+      border-radius: 100px;
+      font-family: var(--mono);
+      font-size: 16px;
+      letter-spacing: 0.05em;
+      color: var(--ink);
+      background: var(--bg-elevated);
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.4s var(--ease-out);
+      z-index: 1;
+    }
+
+    .email-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--ink);
+      transform: translateY(101%);
+      transition: transform 0.5s var(--ease-out);
+      z-index: -1;
+    }
+
+    .email-cta:hover {
+      color: var(--bg);
+      border-color: var(--ink);
+    }
+
+    .email-cta:hover::before {
+      transform: translateY(0);
+    }
+
+    .email-cta .arrow-icon {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.4s var(--ease-out);
+    }
+
+    .email-cta:hover .arrow-icon {
+      transform: translate(4px, -4px);
+    }
+
+    .contact-fine {
+      margin-top: 80px;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      position: relative;
+    }
+
+    footer {
+      padding: 40px 48px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 18px 20px;
+      }
+
+      /* Hero — pull padding in, scale title harder */
+      .hero {
+        padding: 88px 20px 40px;
+        min-height: 92vh;
+      }
+
+      .hero-meta {
+        margin-bottom: 32px;
+        font-size: 12px;
+        gap: 12px;
+      }
+
+      .hero-meta::before {
+        width: 28px;
+      }
+
+      h1.hero-title {
+        margin-bottom: 32px;
+        letter-spacing: -0.025em;
+      }
+
+      .hero-sub {
+        font-size: 16px;
+      }
+
+      /* Tighter section rhythm */
+      section {
+        padding: 72px 20px;
+      }
+
+      .section-label {
+        font-size: 16px;
+        margin-bottom: 40px;
+        letter-spacing: 0.12em;
+        gap: 12px;
+      }
+
+      .section-label::before {
+        width: 28px;
+      }
+
+      /* Manifesto — words breathe less */
+      .manifesto-text {
+        font-size: 28px;
+        line-height: 1.25;
+      }
+
+      /* Approach — collapsed gap */
+      .approach-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .approach-heading {
+        position: static;
+        font-size: 36px;
+      }
+
+      .pillar {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        padding: 28px 0;
+      }
+
+      .pillar-num {
+        padding-top: 0;
+        margin-bottom: 4px;
+        font-size: 12px;
+      }
+
+      .pillar-title {
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
+
+      .pillar-desc {
+        font-size: 16px;
+      }
+
+      /* Stance — tighter */
+      .stance-quote {
+        font-size: 28px;
+        line-height: 1.2;
+      }
+
+      .stance-sub {
+        margin-top: 28px;
+        font-size: 16px;
+      }
+
+      /* Contact — pull bottom space in */
+      .contact {
+        padding: 88px 20px 56px;
+      }
+
+      .contact-label {
+        margin-bottom: 32px;
+        font-size: 12px;
+      }
+
+      .contact h2 {
+        margin-bottom: 40px;
+      }
+
+      .contact-fine {
+        margin-top: 48px;
+        font-size: 12px;
+      }
+
+      .email-cta {
+        padding: 18px 26px;
+        font-size: 12px;
+        gap: 12px;
+      }
+
+      footer {
+        padding: 24px 20px;
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+      }
+
+      .scroll-indicator {
+        left: 20px;
+        bottom: 24px;
+      }
+
+      .scroll-indicator .arrow {
+        height: 24px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      h1.hero-title .line span {
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav id="nav">
+    <a href="#" class="logo" aria-label="TheNextventure">
+      <img src="logo.png" alt="TheNextventure">
+    </a>
+    <a href="#contact" class="nav-cta">Get in touch</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-meta">Boutique AI Engineering · Est. 2026</div>
+    <h1 class="hero-title">
+      <span class="line"><span>AI without</span></span>
+      <span class="line"><span>the <em>theatre.</em></span></span>
+      <span class="line"><span>Just outcomes.</span></span>
+    </h1>
+    <p class="hero-sub">
+      We build customised AI systems for businesses that want to move past the hype — and start measuring impact
+      instead.
+    </p>
+    <a href="#approach" class="scroll-indicator" aria-label="Scroll to next section">
+      Scroll <span class="arrow" aria-hidden="true"></span>
+    </a>
+  </section>
+
+  <section class="manifesto">
+    <div class="section-label">Our position</div>
+    <p class="manifesto-text">
+      <span class="muted">Most AI projects fail not because the models are wrong,</span>
+      but because the <em>problem</em> wasn't understood in the first place.
+      We start where everyone else stops — with your business, your constraints, and the boring details that decide
+      whether a system actually works.
+    </p>
+  </section>
+
+  <section class="approach" id="approach">
+    <div class="section-label">How we work</div>
+    <div class="approach-grid">
+      <h2 class="approach-heading">
+        Models are commodities. <em>Judgement</em> isn't.
+      </h2>
+      <div class="pillars">
+        <div class="pillar">
+          <div class="pillar-num">01</div>
+          <div>
+            <h3 class="pillar-title">Understand before we build</h3>
+            <p class="pillar-desc">We don't sell pre-packaged solutions. We sit with your operations, your data, your
+              edge cases — and only then decide what's worth building.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-num">02</div>
+          <div>
+            <h3 class="pillar-title">Engineer the harness, not just the model</h3>
+            <p class="pillar-desc">The model is 10% of the work. The other 90% — guardrails, evaluation, integration,
+              retrieval, observability — is where real systems live or die. That's where we focus.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-num">03</div>
+          <div>
+            <h3 class="pillar-title">Cut through the hype</h3>
+            <p class="pillar-desc">Agents, RAG, fine-tuning, frontier models — we'll tell you which actually fit your
+              use case, and which are a distraction. Honest answers over impressive demos.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-num">04</div>
+          <div>
+            <h3 class="pillar-title">Ship to production. Stay accountable.</h3>
+            <p class="pillar-desc">A prototype isn't a product. We build for the messy reality of production — uptime,
+              cost, drift, latency, the people who'll actually use it.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stance">
+    <div class="section-label">Who we work with</div>
+    <p class="stance-quote">
+      Companies that have <em>real problems</em> worth solving — not just a slide in the deck that says <em>"AI
+        strategy."</em>
+    </p>
+    <p class="stance-sub">
+      Whether you're an enterprise rethinking a workflow or a founder building something new, the conversation starts
+      the same way: what are you actually trying to do?
+    </p>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="contact-label">Start the conversation</div>
+    <h2>Have a problem<br>worth <em>solving?</em></h2>
+    <a href="mailto:contact@thenextventure.in" class="email-cta">
+      contact@thenextventure.in
+      <svg class="arrow-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3 13L13 3M13 3H5M13 3V11" />
+      </svg>
+    </a>
+    <div class="contact-fine">Typically respond within 24 hours</div>
+  </section>
+
+  <footer>
+    <div>© 2026 TheNextventure</div>
+    <div>Built with restraint.</div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'),
+            entry.target.dataset.delay || 0);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2, rootMargin: '0px 0px -10% 0px' });
+
+    document.querySelectorAll('.pillar').forEach((el, i) => {
+      el.dataset.delay = i * 120;
+      observer.observe(el);
+    });
+
+    const manifestoText = document.querySelector('.manifesto-text');
+    if (manifestoText) {
+      const walker = document.createTreeWalker(manifestoText, NodeFilter.SHOW_TEXT);
+      const nodes = [];
+      let node;
+      while (node = walker.nextNode()) nodes.push(node);
+
+      nodes.forEach(textNode => {
+        const words = textNode.textContent.split(/(\s+)/);
+        const frag = document.createDocumentFragment();
+        words.forEach(w => {
+          if (w.trim()) {
+            const span = document.createElement('span');
+            span.className = 'reveal-word';
+            span.textContent = w;
+            frag.appendChild(span);
+          } else {
+            frag.appendChild(document.createTextNode(w));
+          }
+        });
+        textNode.parentNode.replaceChild(frag, textNode);
+      });
+
+      const wordObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const words = entry.target.querySelectorAll('.reveal-word');
+            words.forEach((w, i) => {
+              setTimeout(() => w.classList.add('visible'), i * 35);
+            });
+            wordObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+
+      wordObserver.observe(manifestoText);
+    }
+
+    const hero = document.querySelector('.hero');
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const y = window.scrollY;
+          if (y > 40) nav.classList.add('scrolled');
+          else nav.classList.remove('scrolled');
+          if (hero) {
+            if (y < window.innerHeight) {
+              hero.style.transform = `translateY(${y * 0.15}px)`;
+              hero.style.opacity = 1 - (y / window.innerHeight) * 0.6;
+            } else {
+              hero.style.opacity = 0.4;
+            }
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+  </script>
+
+</body>
+
+</html>
